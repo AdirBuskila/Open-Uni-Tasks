@@ -31,7 +31,7 @@ const assignmentData = [
     course: 'Micro Econimics',
     courseIcon: '📈',
     assignments: [
-      { name: 'Maman 12', dueDate: '2023-04-20' },
+      { name: 'Maman 12', dueDate: '2023-04-29' },
       { name: 'Maman 13', dueDate: '2023-05-11' },
       { name: 'Maman 14', dueDate: '2023-06-01' },
       { name: 'Maman 15', dueDate: '2023-06-12' },
