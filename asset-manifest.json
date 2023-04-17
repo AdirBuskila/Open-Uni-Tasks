@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Open-Uni-Tasks/static/css/main.cfbbac0c.css",
+    "main.js": "/Open-Uni-Tasks/static/js/main.4d40fa25.js",
+    "index.html": "/Open-Uni-Tasks/index.html",
+    "main.cfbbac0c.css.map": "/Open-Uni-Tasks/static/css/main.cfbbac0c.css.map",
+    "main.4d40fa25.js.map": "/Open-Uni-Tasks/static/js/main.4d40fa25.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cfbbac0c.css",
+    "static/js/main.4d40fa25.js"
+  ]
+}
