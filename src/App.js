@@ -6,6 +6,7 @@ const assignmentData = [
     course: 'Java',
     courseIcon: '👩‍💻',
     assignments: [
+      { name: 'Maman 11', dueDate: '2023-04-27' },
       { name: 'Maman 12', dueDate: '2023-05-13' },
       { name: 'Maman 13', dueDate: '2023-05-27' },
       { name: 'Maman 14', dueDate: '2023-06-10' },
