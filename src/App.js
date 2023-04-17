@@ -17,7 +17,7 @@ const assignmentData = [
     course: 'Linear Algebra',
     courseIcon: '🧮',
     assignments: [
-      { name: 'Maman 12', dueDate: '2023-04-24' },
+      { name: 'Maman 12', dueDate: '2023-04-27' },
       { name: 'Maman 13', dueDate: '2023-05-18' },
       { name: 'Maman 14', dueDate: '2023-06-22' },
       { name: 'Mamah 01', dueDate: '2023-04-30' },
@@ -43,11 +43,6 @@ function App() {
   const [assignments, setAssignments] = useState([]);
 
   useEffect(() => {
-    // Request notification permission
-    if ('Notification' in window) {
-      Notification.requestPermission();
-    }
-
     const currentDate = new Date();
     const allAssignments = assignmentData.flatMap((course) =>
       course.assignments.map((assignment) => ({
@@ -67,27 +62,6 @@ function App() {
     setAssignments(filteredAssignments);
   }, []);
 
-  useEffect(() => {
-    const checkAssignmentsDueIn7Days = () => {
-      const currentDate = new Date();
-      assignments.forEach((assignment) => {
-        if (daysUntil(assignment.dueDate) === 7) {
-          console.log('here');
-          new Notification(`Assignment due in 7 days: ${assignment.course} - ${assignment.name}`, {
-            body: `Due on ${assignment.dueDate}`,
-          });
-        }
-      });
-    };
-
-    // Check assignments daily
-    const interval = setInterval(checkAssignmentsDueIn7Days, 24 * 60 * 60 * 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [assignments]);
-
   const daysUntil = (dueDate) => {
     const currentDate = new Date();
     const assignmentDate = new Date(dueDate);
@@ -97,23 +71,12 @@ function App() {
     return daysDifference;
   };
 
-  const listItemStyle = (assignment) => {
-    const daysLeft = daysUntil(assignment.dueDate);
-
-    if (daysLeft < 0) {
-      return 'submit-time-over';
-    }
-    if (daysLeft < 7) {
-      return 'less-than-7';
-    }
-    if (daysLeft < 15) {
-      return 'less-than-15';
-    }
-    return 'more-than-15';
-  };
-
   const assignmentIcon = (assignmentName) => {
     return assignmentName.includes('Maman') ? '📜' : '💻';
+  };
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-GB');
   };
 
   return (
@@ -121,8 +84,8 @@ function App() {
       <h1>Semester 2023-B</h1>
       <ul>
         {assignments.map((assignment, index) => (
-          <li key={index} className={listItemStyle(assignment)} style={{ backgroundColor: assignment.color }}>
-            {assignment.courseIcon} {assignment.course}: {assignment.name} {assignmentIcon(assignment.name)} - Due on {assignment.dueDate} - {daysUntil(assignment.dueDate) < 0 ? 'Submit time over' : `${daysUntil(assignment.dueDate)} day(s) left`}
+          <li key={index} style={{ backgroundColor: assignment.color }}>
+            {assignment.courseIcon} {assignment.course}: {assignment.name} {assignmentIcon(assignment.name)} - Due on {formatDate(assignment.dueDate)} - {daysUntil(assignment.dueDate) < 0 ? 'Submit time over' : `${daysUntil(assignment.dueDate)} day(s) left`}
           </li>
         ))}
       </ul>
