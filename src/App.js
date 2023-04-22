@@ -1,47 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { assignmentData } from './utils';
 import './App.css';
-
-const assignmentData = [
-  {
-    course: 'Java',
-    courseIcon: '👩‍💻',
-    assignments: [
-      { name: 'Maman 11', dueDate: '2023-04-27' },
-      { name: 'Maman 12', dueDate: '2023-05-13' },
-      { name: 'Maman 13', dueDate: '2023-05-27' },
-      { name: 'Maman 14', dueDate: '2023-06-10' },
-      { name: 'Opal 2', dueDate: '2023-06-17' },
-    ],
-    color: '#4caf50',
-  },
-  {
-    course: 'Linear Algebra',
-    courseIcon: '🧮',
-    assignments: [
-      { name: 'Maman 12', dueDate: '2023-04-27' },
-      { name: 'Maman 13', dueDate: '2023-05-18' },
-      { name: 'Maman 14', dueDate: '2023-06-22' },
-      { name: 'Mamah 01', dueDate: '2023-04-30' },
-      { name: 'Mamah 02', dueDate: '2023-05-21' },
-      { name: 'Mamah 03', dueDate: '2023-06-23' },
-    ],
-    color: '#2196f3',
-  },
-  {
-    course: 'Micro Econimics',
-    courseIcon: '📈',
-    assignments: [
-      { name: 'Maman 12', dueDate: '2023-04-29' },
-      { name: 'Maman 13', dueDate: '2023-05-11' },
-      { name: 'Maman 14', dueDate: '2023-06-01' },
-      { name: 'Maman 15', dueDate: '2023-06-12' },
-    ],
-    color: '#d86a36',
-  },
-];
+import { Assignment } from './Assignment';
+import { PaletteChooser } from './PaletteChooser';
 
 function App() {
   const [assignments, setAssignments] = useState([]);
+  const [paletteIndex, setPaletteIndex] = useState(localStorage.getItem('paletteIndex') || 0);
+  const [javaColor, setJavaColor] = useState(assignmentData[0].colors[paletteIndex]);
+  const [microColor, setMicroColor] = useState(assignmentData[1].colors[paletteIndex]);
+  const [algebraColor, setAlgebraColor] = useState(assignmentData[2].colors[paletteIndex]);
 
   useEffect(() => {
     const currentDate = new Date();
@@ -60,34 +28,42 @@ function App() {
       return new Date(assignment.dueDate) > currentDate;
     });
 
-    setAssignments(filteredAssignments);
+    const finishedAssignments = JSON.parse(localStorage.getItem('finishedAssignments')) || [];
+    const updatedAssignments = filteredAssignments.map((assignment) => {
+      const isCompleted = finishedAssignments.some((finished) => finished.course === assignment.course && finished.name === assignment.name);
+      return { ...assignment, isCompleted };
+    });
+
+    setAssignments(updatedAssignments);
   }, []);
 
-  const daysUntil = (dueDate) => {
-    const currentDate = new Date();
-    const assignmentDate = new Date(dueDate);
-    const timeDifference = assignmentDate - currentDate;
-    const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  useEffect(() => {
+    setJavaColor(assignmentData[0].colors[paletteIndex]);
+    setMicroColor(assignmentData[1].colors[paletteIndex]);
+    setAlgebraColor(assignmentData[2].colors[paletteIndex]);
+    localStorage.setItem('paletteIndex', paletteIndex);
+  }, [paletteIndex]);
 
-    return daysDifference;
+  const toggleCompletion = (assignment) => {
+    const updatedAssignments = assignments.map((item) => (item.course === assignment.course && item.name === assignment.name ? { ...item, isCompleted: !item.isCompleted } : item));
+    setAssignments(updatedAssignments);
+
+    // Update the finished assignments in local storage
+    const finishedAssignments = updatedAssignments.filter((item) => item.isCompleted);
+    localStorage.setItem('finishedAssignments', JSON.stringify(finishedAssignments));
   };
 
-  const assignmentIcon = (assignmentName) => {
-    return assignmentName.includes('Maman') ? '📜' : '💻';
-  };
-
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-GB');
+  const changePaletteIndex = (index) => {
+    setPaletteIndex(index);
   };
 
   return (
     <div className='App'>
       <h1>Semester 2023-B</h1>
+      <PaletteChooser changePaletteIndex={changePaletteIndex} />
       <ul>
         {assignments.map((assignment, index) => (
-          <li key={index} style={{ backgroundColor: assignment.color }}>
-            {assignment.courseIcon} {assignment.course}: {assignment.name} {assignmentIcon(assignment.name)} - Due on {formatDate(assignment.dueDate)} - {daysUntil(assignment.dueDate) < 0 ? 'Submit time over' : `${daysUntil(assignment.dueDate)} day(s) left`}
-          </li>
+          <Assignment assignment={assignment} index={index} toggleCompletion={toggleCompletion} paletteIndex={paletteIndex} javaColor={javaColor} microColor={microColor} algebraColor={algebraColor} />
         ))}
       </ul>
     </div>
