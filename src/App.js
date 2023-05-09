@@ -36,6 +36,7 @@ function App() {
     setPaletteIndex(index);
   };
 
+  // App.js
   const handleUpdate = (id, dueDate) => {
     const updatedAssignments = assignments.map((assignment) => (assignment.id === id ? { ...assignment, dueDate } : assignment));
 
@@ -44,6 +45,11 @@ function App() {
 
     // Save the updated assignments to local storage
     localStorage.setItem('assignments', JSON.stringify(updatedAssignments));
+
+    // Manually update the due date in local storage
+    const storedDueDates = JSON.parse(localStorage.getItem('dueDates')) || {};
+    storedDueDates[id] = dueDate;
+    localStorage.setItem('dueDates', JSON.stringify(storedDueDates));
   };
 
   const handleEdit = (assignment) => {

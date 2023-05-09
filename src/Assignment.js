@@ -16,7 +16,6 @@ export const Assignment = ({ assignment, index, toggleCompletion, handleEdit, pa
     assignmentDate.setHours(23, 59, 59, 999); // ensure we count the entire due date
     const timeDifference = assignmentDate - currentDate;
     const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // use Math.floor instead of Math.ceil
-    console.log(daysDifference);
     if (daysDifference === 0) {
       return { text: 'Due today until 00:00 ❗', isDueToday: true };
     } else {
