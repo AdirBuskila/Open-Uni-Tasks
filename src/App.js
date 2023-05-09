@@ -3,39 +3,18 @@ import { assignmentData } from './utils';
 import './App.css';
 import { Assignment } from './Assignment';
 import { PaletteChooser } from './PaletteChooser';
+import { CourseFilter } from './CourseFilter';
+import useAssignments from './useAssignments';
+import { EditAssignmentForm } from './EditAssignmentForm';
 
 function App() {
-  const [assignments, setAssignments] = useState([]);
+  const [editingAssignment, setEditingAssignment] = useState(null);
+  const [assignments, setAssignments] = useAssignments();
   const [paletteIndex, setPaletteIndex] = useState(localStorage.getItem('paletteIndex') || 0);
   const [javaColor, setJavaColor] = useState(assignmentData[0].colors[paletteIndex]);
   const [microColor, setMicroColor] = useState(assignmentData[1].colors[paletteIndex]);
   const [algebraColor, setAlgebraColor] = useState(assignmentData[2].colors[paletteIndex]);
-
-  useEffect(() => {
-    const currentDate = new Date();
-    const allAssignments = assignmentData.flatMap((course) =>
-      course.assignments.map((assignment) => ({
-        ...assignment,
-        course: course.course,
-        color: course.color,
-        courseIcon: course.courseIcon,
-      }))
-    );
-    allAssignments.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-
-    // Filter assignments with due dates that have not passed
-    const filteredAssignments = allAssignments.filter((assignment) => {
-      return new Date(assignment.dueDate) > currentDate;
-    });
-
-    const finishedAssignments = JSON.parse(localStorage.getItem('finishedAssignments')) || [];
-    const updatedAssignments = filteredAssignments.map((assignment) => {
-      const isCompleted = finishedAssignments.some((finished) => finished.course === assignment.course && finished.name === assignment.name);
-      return { ...assignment, isCompleted };
-    });
-
-    setAssignments(updatedAssignments);
-  }, []);
+  const [selectedCourses, setSelectedCourses] = useState(assignmentData.map((course) => course.course));
 
   useEffect(() => {
     setJavaColor(assignmentData[0].colors[paletteIndex]);
@@ -57,15 +36,46 @@ function App() {
     setPaletteIndex(index);
   };
 
+  const handleUpdate = (id, dueDate) => {
+    const updatedAssignments = assignments.map((assignment) => (assignment.id === id ? { ...assignment, dueDate } : assignment));
+
+    setAssignments(updatedAssignments);
+    setEditingAssignment(null);
+
+    // Save the updated assignments to local storage
+    localStorage.setItem('assignments', JSON.stringify(updatedAssignments));
+  };
+
+  const handleEdit = (assignment) => {
+    setEditingAssignment(assignment);
+  };
+
+  const handleCourseFilter = (course) => {
+    if (selectedCourses.includes(course)) {
+      setSelectedCourses(selectedCourses.filter((item) => item !== course));
+    } else {
+      setSelectedCourses([...selectedCourses, course]);
+    }
+  };
+
   return (
     <div className='App'>
       <h1>Semester 2023-B</h1>
       <PaletteChooser changePaletteIndex={changePaletteIndex} />
+      <CourseFilter handleCourseFilter={handleCourseFilter} selectedCourses={selectedCourses} />
       <ul>
-        {assignments.map((assignment, index) => (
-          <Assignment assignment={assignment} index={index} toggleCompletion={toggleCompletion} paletteIndex={paletteIndex} javaColor={javaColor} microColor={microColor} algebraColor={algebraColor} />
-        ))}
+        {assignments
+          .filter((assignment) => {
+            let dueDate = new Date(assignment.dueDate);
+            dueDate.setHours(23, 59, 59); // set the time to the end of the day
+            return dueDate >= new Date() && selectedCourses.includes(assignment.course);
+          })
+          .map((assignment, index) => (
+            <Assignment assignment={assignment} index={index} toggleCompletion={toggleCompletion} handleEdit={handleEdit} paletteIndex={paletteIndex} javaColor={javaColor} microColor={microColor} algebraColor={algebraColor} />
+          ))}
       </ul>
+      {editingAssignment && <EditAssignmentForm assignment={editingAssignment} handleUpdate={handleUpdate} />}
+      <p>Made by Adir Buskila</p>
     </div>
   );
 }
