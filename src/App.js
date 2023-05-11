@@ -9,7 +9,7 @@ import { EditAssignmentForm } from './EditAssignmentForm';
 import DarkModeToggle from './DarkModeToggle';
 
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [paletteIndex, setPaletteIndex] = useState(localStorage.getItem('paletteIndex') || 0);
   const [javaColor, setJavaColor] = useState(assignmentData[0].colors[paletteIndex]);
   const [microColor, setMicroColor] = useState(assignmentData[1].colors[paletteIndex]);
@@ -79,7 +79,9 @@ function App() {
   };
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
   };
 
   return (
