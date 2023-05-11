@@ -6,15 +6,18 @@ import { PaletteChooser } from './PaletteChooser';
 import { CourseFilter } from './CourseFilter';
 import useAssignments from './useAssignments';
 import { EditAssignmentForm } from './EditAssignmentForm';
+import DarkModeToggle from './DarkModeToggle';
 
 function App() {
-  const [editingAssignment, setEditingAssignment] = useState(null);
-  const [assignments, setAssignments] = useAssignments();
+  const [theme, setTheme] = useState('light');
   const [paletteIndex, setPaletteIndex] = useState(localStorage.getItem('paletteIndex') || 0);
   const [javaColor, setJavaColor] = useState(assignmentData[0].colors[paletteIndex]);
   const [microColor, setMicroColor] = useState(assignmentData[1].colors[paletteIndex]);
   const [algebraColor, setAlgebraColor] = useState(assignmentData[2].colors[paletteIndex]);
+
+  const [editingAssignment, setEditingAssignment] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState(assignmentData.map((course) => course.course));
+  const [assignments, setAssignments] = useAssignments();
 
   useEffect(() => {
     setJavaColor(assignmentData[0].colors[paletteIndex]);
@@ -22,6 +25,17 @@ function App() {
     setAlgebraColor(assignmentData[2].colors[paletteIndex]);
     localStorage.setItem('paletteIndex', paletteIndex);
   }, [paletteIndex]);
+
+  useEffect(() => {
+    const localTheme = localStorage.getItem('theme');
+    localTheme && setTheme(localTheme);
+  }, []);
+
+  useEffect(() => {
+    document.body.className = '';
+    document.body.classList.add(`${theme}-theme`);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const toggleCompletion = (assignment) => {
     const updatedAssignments = assignments.map((item) => (item.course === assignment.course && item.name === assignment.name ? { ...item, isCompleted: !item.isCompleted } : item));
@@ -64,9 +78,14 @@ function App() {
     }
   };
 
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
+
   return (
     <div className='App'>
       <h1>Semester 2023-B</h1>
+      <DarkModeToggle theme={theme} toggleTheme={toggleTheme} />
       <PaletteChooser changePaletteIndex={changePaletteIndex} />
       <CourseFilter handleCourseFilter={handleCourseFilter} selectedCourses={selectedCourses} />
       <ul>
