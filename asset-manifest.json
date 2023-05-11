@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Open-Uni-Tasks/static/css/main.8bf0ca90.css",
-    "main.js": "/Open-Uni-Tasks/static/js/main.f5af6f61.js",
+    "main.css": "/Open-Uni-Tasks/static/css/main.bc142a20.css",
+    "main.js": "/Open-Uni-Tasks/static/js/main.d261cd0d.js",
     "index.html": "/Open-Uni-Tasks/index.html",
-    "main.8bf0ca90.css.map": "/Open-Uni-Tasks/static/css/main.8bf0ca90.css.map",
-    "main.f5af6f61.js.map": "/Open-Uni-Tasks/static/js/main.f5af6f61.js.map"
+    "main.bc142a20.css.map": "/Open-Uni-Tasks/static/css/main.bc142a20.css.map",
+    "main.d261cd0d.js.map": "/Open-Uni-Tasks/static/js/main.d261cd0d.js.map"
   },
   "entrypoints": [
-    "static/css/main.8bf0ca90.css",
-    "static/js/main.f5af6f61.js"
+    "static/css/main.bc142a20.css",
+    "static/js/main.d261cd0d.js"
   ]
 }
