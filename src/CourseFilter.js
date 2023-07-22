@@ -1,10 +1,12 @@
+import { assignmentData } from './utils'; // import assignmentData
+
 export const CourseFilter = ({ handleCourseFilter, selectedCourses }) => {
   return (
     <div>
-      {['Java', 'Linear Algebra', 'Micro Economics'].map((course) => (
-        <label key={course}>
-          <input type='checkbox' checked={selectedCourses.includes(course)} onChange={() => handleCourseFilter(course)} />
-          {course}
+      {assignmentData.map((courseData) => (
+        <label key={courseData.course}>
+          <input type='checkbox' checked={selectedCourses.includes(courseData.course)} onChange={() => handleCourseFilter(courseData.course)} />
+          {courseData.course}
         </label>
       ))}
     </div>

@@ -11,18 +11,12 @@ import DarkModeToggle from './DarkModeToggle';
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [paletteIndex, setPaletteIndex] = useState(localStorage.getItem('paletteIndex') || 0);
-  const [javaColor, setJavaColor] = useState(assignmentData[0].colors[paletteIndex]);
-  const [microColor, setMicroColor] = useState(assignmentData[1].colors[paletteIndex]);
-  const [algebraColor, setAlgebraColor] = useState(assignmentData[2].colors[paletteIndex]);
 
   const [editingAssignment, setEditingAssignment] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState(assignmentData.map((course) => course.course));
   const [assignments, setAssignments] = useAssignments();
 
   useEffect(() => {
-    setJavaColor(assignmentData[0].colors[paletteIndex]);
-    setMicroColor(assignmentData[1].colors[paletteIndex]);
-    setAlgebraColor(assignmentData[2].colors[paletteIndex]);
     localStorage.setItem('paletteIndex', paletteIndex);
   }, [paletteIndex]);
 
@@ -86,7 +80,7 @@ function App() {
 
   return (
     <div className='App'>
-      <h1>Semester 2023-B</h1>
+      <h1>🌞 Semester 2023-Summer 🌞</h1>
       <DarkModeToggle theme={theme} toggleTheme={toggleTheme} />
       <PaletteChooser changePaletteIndex={changePaletteIndex} />
       <CourseFilter handleCourseFilter={handleCourseFilter} selectedCourses={selectedCourses} />
@@ -98,7 +92,7 @@ function App() {
             return dueDate >= new Date() && selectedCourses.includes(assignment.course);
           })
           .map((assignment, index) => (
-            <Assignment assignment={assignment} index={index} toggleCompletion={toggleCompletion} handleEdit={handleEdit} paletteIndex={paletteIndex} javaColor={javaColor} microColor={microColor} algebraColor={algebraColor} />
+            <Assignment assignment={assignment} index={index} toggleCompletion={toggleCompletion} handleEdit={handleEdit} paletteIndex={paletteIndex} />
           ))}
       </ul>
       {editingAssignment && <EditAssignmentForm assignment={editingAssignment} handleUpdate={handleUpdate} />}

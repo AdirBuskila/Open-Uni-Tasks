@@ -1,4 +1,5 @@
 import React from 'react';
+import { assignmentData } from './utils'; // import assignmentData
 import { daysUntil } from './utils';
 
 export const Assignment = ({ assignment, index, toggleCompletion, handleEdit, paletteIndex, javaColor, microColor, algebraColor }) => {
@@ -13,10 +14,8 @@ export const Assignment = ({ assignment, index, toggleCompletion, handleEdit, pa
   const dueInfo = daysUntil(assignment.dueDate);
 
   const assignmentColor = (name) => {
-    name = name.toLowerCase();
-    if (name === 'java') return javaColor;
-    if (name === 'micro economics') return microColor;
-    if (name === 'linear algebra') return algebraColor;
+    const courseInfo = assignmentData.find((course) => course.course.toLowerCase() === name.toLowerCase());
+    return courseInfo ? courseInfo.colors[paletteIndex % courseInfo.colors.length] : 'black';
   };
 
   return (

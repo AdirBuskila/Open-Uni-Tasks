@@ -1,39 +1,21 @@
 export const assignmentData = [
+  // ... existing data
   {
-    course: 'Java',
-    courseIcon: '👩‍💻',
-    assignments: [
-      { id: 'java-1', name: 'Maman 11', dueDate: '2023-04-27' },
-      { id: 'java-2', name: 'Maman 12', dueDate: '2023-05-13' },
-      { id: 'java-3', name: 'Maman 13', dueDate: '2023-05-27' },
-      { id: 'java-4', name: 'Maman 14', dueDate: '2023-06-10' },
-      { id: 'java-5', name: 'Opal 2', dueDate: '2023-06-17' },
-    ],
-    colors: ['#4caf50', '#1D267D', '#D25380'],
-  },
-  {
-    course: 'Linear Algebra',
+    course: 'Bdida',
     courseIcon: '🧮',
     assignments: [
-      { id: 'algebra-1', name: 'Maman 12', dueDate: '2023-04-27' },
-      { id: 'algebra-2', name: 'Maman 13', dueDate: '2023-05-18' },
-      { id: 'algebra-3', name: 'Maman 14', dueDate: '2023-06-22' },
-      { id: 'algebra-4', name: 'Mamah 01', dueDate: '2023-04-30' },
-      { id: 'algebra-5', name: 'Mamah 02', dueDate: '2023-05-21' },
-      { id: 'algebra-6', name: 'Mamah 03', dueDate: '2023-06-23' },
+      { id: 'bdida-1', name: 'Maman 11', dueDate: '2023-07-25' },
+      { id: 'bdida-2', name: 'Mamah 02', dueDate: '2023-08-02' },
+      { id: 'bdida-3', name: 'Maman 12', dueDate: '2023-08-08' },
+      { id: 'bdida-4', name: 'Maman 13', dueDate: '2023-08-16' },
+      { id: 'bdida-5', name: 'Mamah 03', dueDate: '2023-08-13' },
+      { id: 'bdida-6', name: 'Maman 14', dueDate: '2023-08-23' },
+      { id: 'bdida-7', name: 'Mamah 04', dueDate: '2023-08-30' },
+      { id: 'bdida-8', name: 'Maman 15', dueDate: '2023-09-05' },
+      { id: 'bdida-9', name: 'Mamah 02', dueDate: '2023-09-11' },
+      { id: 'bdida-10', name: 'Maman 16', dueDate: '2023-09-15' },
     ],
-    colors: ['#e53935', '#5C469C', '#E08E6D'],
-  },
-  {
-    course: 'Micro Economics',
-    courseIcon: '📈',
-    assignments: [
-      { id: 'economics-1', name: 'Maman 12', dueDate: '2023-04-29' },
-      { id: 'economics-2', name: 'Maman 13', dueDate: '2023-05-11' },
-      { id: 'economics-3', name: 'Maman 14', dueDate: '2023-06-01' },
-      { id: 'economics-4', name: 'Maman 15', dueDate: '2023-06-12' },
-    ],
-    colors: ['#fb8c00', '#D4ADFC', '#F6C391'],
+    colors: ['#e53935', '#5C469C', '#E08E6D'], // I've used the same colors as for 'Linear Algebra'. Adjust these as needed.
   },
 ];
 export const calculateDaysLeft = (dueDate) => {
