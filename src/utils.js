@@ -3,6 +3,7 @@ export const assignmentData = [
     course: 'Bdida',
     courseIcon: '🧮',
     assignments: [
+      { id: 'bdida-0', name: 'Mamah 01', dueDate: '2023-07-10' },
       { id: 'bdida-1', name: 'Maman 11', dueDate: '2023-07-25' },
       { id: 'bdida-2', name: 'Mamah 02', dueDate: '2023-08-02' },
       { id: 'bdida-3', name: 'Maman 12', dueDate: '2023-08-08' },
@@ -11,7 +12,7 @@ export const assignmentData = [
       { id: 'bdida-6', name: 'Maman 14', dueDate: '2023-08-23' },
       { id: 'bdida-7', name: 'Mamah 04', dueDate: '2023-08-30' },
       { id: 'bdida-8', name: 'Maman 15', dueDate: '2023-09-05' },
-      { id: 'bdida-9', name: 'Mamah 02', dueDate: '2023-09-11' },
+      { id: 'bdida-9', name: 'Mamah 05', dueDate: '2023-09-11' },
       { id: 'bdida-10', name: 'Maman 16', dueDate: '2023-09-15' },
     ],
     colors: ['#80E1D1', '#D5C1E8', '#F7D79C'],
@@ -40,4 +41,13 @@ export const daysUntil = (dueDate) => {
       isDueToday: false,
     };
   }
+};
+
+export const getPastDueAssignments = (assignments) => {
+  const now = new Date();
+  return assignments.filter((assignment) => new Date(assignment.dueDate) < now).length;
+};
+
+export const getCompletedAssignments = (assignments) => {
+  return assignments.filter((assignment) => assignment.isCompleted).length;
 };

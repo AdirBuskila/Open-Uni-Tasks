@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { assignmentData } from './utils';
+import { assignmentData, getPastDueAssignments, getCompletedAssignments } from './utils';
 import './App.css';
 import { Assignment } from './Assignment';
 import { PaletteChooser } from './PaletteChooser';
@@ -7,6 +7,8 @@ import { CourseFilter } from './CourseFilter';
 import useAssignments from './useAssignments';
 import { EditAssignmentForm } from './EditAssignmentForm';
 import DarkModeToggle from './DarkModeToggle';
+import { Progress } from './Progress';
+import { AssignmentForm } from './AssignmentForm';
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -48,7 +50,7 @@ function App() {
     setSelectedCourseIndex(index); // set selected course index when palette index changes
   };
 
-  // App.js
+  // Handle //
   const handleUpdate = (id, dueDate) => {
     const updatedAssignments = assignments.map((assignment) => (assignment.id === id ? { ...assignment, dueDate } : assignment));
 
@@ -76,6 +78,12 @@ function App() {
     }
   };
 
+  const handleNewAssignment = (newAssignment) => {
+    const updatedAssignments = [...assignments, newAssignment];
+    setAssignments(updatedAssignments);
+    localStorage.setItem('assignments', JSON.stringify(updatedAssignments));
+  };
+
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
@@ -89,6 +97,8 @@ function App() {
       </h1>
       <DarkModeToggle theme={theme} toggleTheme={toggleTheme} />
       <PaletteChooser changePaletteIndex={changePaletteIndex} colors={allColors} />
+      <Progress totalAssignments={assignmentData[0].assignments.length} completedAssignments={getPastDueAssignments(assignments) + getCompletedAssignments(assignments)} />
+      {/* <AssignmentForm handleNewAssignment={handleNewAssignment} /> */}
       <CourseFilter handleCourseFilter={handleCourseFilter} selectedCourses={selectedCourses} />
       <ul>
         {assignments
