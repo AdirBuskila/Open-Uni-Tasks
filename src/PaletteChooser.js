@@ -1,15 +1,11 @@
-export const PaletteChooser = ({ changePaletteIndex }) => {
+export const PaletteChooser = ({ changePaletteIndex, colors }) => {
   return (
     <div className='buttons-container'>
-      <button style={{ backgroundColor: '#4caf50', color: 'white' }} className='btn-0' onClick={() => changePaletteIndex(0)}>
-        1
-      </button>
-      <button style={{ backgroundColor: '#1D267D', color: 'white' }} className='btn-1' onClick={() => changePaletteIndex(1)}>
-        2
-      </button>
-      <button style={{ backgroundColor: '#D25380', color: 'white' }} className='btn-2' onClick={() => changePaletteIndex(2)}>
-        3
-      </button>
+      {colors.map((color, index) => (
+        <button key={index} style={{ backgroundColor: color, color: 'white' }} className={`btn-${index}`} onClick={() => changePaletteIndex(index)}>
+          {index + 1}
+        </button>
+      ))}
     </div>
   );
 };

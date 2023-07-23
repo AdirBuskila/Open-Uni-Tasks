@@ -69,6 +69,10 @@ li {
   color: var(--background);
 }
 
+.buttons-container button {
+  margin: 10px; /* adjust as necessary */
+}
+
 .edit-button {
   background-color: #3498db;
   color: #fff;

@@ -1,5 +1,4 @@
 export const assignmentData = [
-  // ... existing data
   {
     course: 'Bdida',
     courseIcon: '🧮',
@@ -15,7 +14,7 @@ export const assignmentData = [
       { id: 'bdida-9', name: 'Mamah 02', dueDate: '2023-09-11' },
       { id: 'bdida-10', name: 'Maman 16', dueDate: '2023-09-15' },
     ],
-    colors: ['#e53935', '#5C469C', '#E08E6D'], // I've used the same colors as for 'Linear Algebra'. Adjust these as needed.
+    colors: ['#80E1D1', '#D5C1E8', '#F7D79C'],
   },
 ];
 export const calculateDaysLeft = (dueDate) => {

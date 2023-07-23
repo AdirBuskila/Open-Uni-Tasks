@@ -11,10 +11,13 @@ import DarkModeToggle from './DarkModeToggle';
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [paletteIndex, setPaletteIndex] = useState(localStorage.getItem('paletteIndex') || 0);
+  const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
 
   const [editingAssignment, setEditingAssignment] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState(assignmentData.map((course) => course.course));
   const [assignments, setAssignments] = useAssignments();
+
+  const allColors = assignmentData.flatMap((course) => course.colors);
 
   useEffect(() => {
     localStorage.setItem('paletteIndex', paletteIndex);
@@ -42,6 +45,7 @@ function App() {
 
   const changePaletteIndex = (index) => {
     setPaletteIndex(index);
+    setSelectedCourseIndex(index); // set selected course index when palette index changes
   };
 
   // App.js
@@ -80,9 +84,11 @@ function App() {
 
   return (
     <div className='App'>
-      <h1>🌞 Semester 2023-Summer 🌞</h1>
+      <h1>
+        {theme === 'dark' ? '🌙' : '🌞'} 2023-Summer {theme === 'dark' ? '🌙' : '🌞'}
+      </h1>
       <DarkModeToggle theme={theme} toggleTheme={toggleTheme} />
-      <PaletteChooser changePaletteIndex={changePaletteIndex} />
+      <PaletteChooser changePaletteIndex={changePaletteIndex} colors={allColors} />
       <CourseFilter handleCourseFilter={handleCourseFilter} selectedCourses={selectedCourses} />
       <ul>
         {assignments
