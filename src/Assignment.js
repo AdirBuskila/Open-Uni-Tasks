@@ -1,8 +1,9 @@
 import React from 'react';
-import { assignmentData } from './utils'; // import assignmentData
-import { daysUntil } from './utils';
+import { assignmentData, daysUntil } from './utils'; // import assignmentData
+import ImageButton from './cmps/ImageButton';
+import EditButton from './cmps/EditButton';
 
-export const Assignment = ({ assignment, index, toggleCompletion, handleEdit, paletteIndex, javaColor, microColor, algebraColor }) => {
+export const Assignment = ({ assignment, index, toggleCompletion, handleEdit, paletteIndex }) => {
   const assignmentIcon = (assignmentName) => {
     return assignmentName.includes('Maman') ? '📜' : '💻';
   };
@@ -30,15 +31,12 @@ export const Assignment = ({ assignment, index, toggleCompletion, handleEdit, pa
       onClick={() => toggleCompletion(assignment)}
     >
       {assignment.courseIcon} {assignment.course}: {assignment.name} {assignmentIcon(assignment.name)} - Due on {formatDate(assignment.dueDate)} - {dueInfo.text}
-      <button
-        className='edit-button'
-        onClick={(e) => {
-          e.stopPropagation();
-          handleEdit(assignment);
-        }}
-      >
-        Edit
-      </button>
+      <div className='btn-container'>
+        {assignment.imageURL.map((url, i) => (
+          <ImageButton url={url} index={i} key={i} />
+        ))}
+        <EditButton handleEdit={handleEdit} assignment={assignment} />
+      </div>
     </li>
   );
 };

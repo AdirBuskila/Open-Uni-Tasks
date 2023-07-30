@@ -1,4 +1,4 @@
-import { assignmentData } from './utils'; // import assignmentData
+import { assignmentData } from '../utils'; // import assignmentData
 
 export const CourseFilter = ({ handleCourseFilter, selectedCourses }) => {
   return (

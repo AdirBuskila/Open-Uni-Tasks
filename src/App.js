@@ -2,24 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { assignmentData, getPastDueAssignments, getCompletedAssignments } from './utils';
 import './App.css';
 import { Assignment } from './Assignment';
-import { PaletteChooser } from './PaletteChooser';
-import { CourseFilter } from './CourseFilter';
+import { PaletteChooser } from './cmps/PaletteChooser';
+import { CourseFilter } from './cmps/CourseFilter';
 import useAssignments from './useAssignments';
-import { EditAssignmentForm } from './EditAssignmentForm';
-import DarkModeToggle from './DarkModeToggle';
-import { Progress } from './Progress';
-import { AssignmentForm } from './AssignmentForm';
+import { EditAssignmentForm } from './forms/EditAssignmentForm';
+import DarkModeToggle from './cmps/DarkModeToggle';
+import { Progress } from './cmps/Progress';
+import { AssignmentForm } from './forms/AssignmentForm';
+import ShowAllButton from './cmps/ShowAllButton';
+import Header from './cmps/Header';
+import AssignmentList from './cmps/AssignmentList';
+import Footer from './cmps/Footer';
 
 function App() {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  const [paletteIndex, setPaletteIndex] = useState(localStorage.getItem('paletteIndex') || 0);
-  const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
-
+  // data
+  const [assignments, setAssignments] = useAssignments();
+  // app state
   const [editingAssignment, setEditingAssignment] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState(assignmentData.map((course) => course.course));
-  const [assignments, setAssignments] = useAssignments();
-
+  const [showAll, setShowAll] = useState(false); // New state variable for showing all assignments
+  // styles
   const allColors = assignmentData.flatMap((course) => course.colors);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [paletteIndex, setPaletteIndex] = useState(localStorage.getItem('paletteIndex') || 0);
 
   useEffect(() => {
     localStorage.setItem('paletteIndex', paletteIndex);
@@ -45,9 +50,12 @@ function App() {
     localStorage.setItem('finishedAssignments', JSON.stringify(finishedAssignments));
   };
 
+  const toggleShowAll = () => {
+    setShowAll(!showAll); // Toggle showAll when button is clicked
+  };
+
   const changePaletteIndex = (index) => {
     setPaletteIndex(index);
-    setSelectedCourseIndex(index); // set selected course index when palette index changes
   };
 
   // Handle //
@@ -92,27 +100,18 @@ function App() {
 
   return (
     <div className='App'>
-      <h1>
-        {theme === 'dark' ? '🌙' : '🌞'} 2023-Summer {theme === 'dark' ? '🌙' : '🌞'}
-      </h1>
-      <DarkModeToggle theme={theme} toggleTheme={toggleTheme} />
+      <Header theme={theme} />
+      <div className='toggle-btns'>
+        <DarkModeToggle theme={theme} toggleTheme={toggleTheme} />
+        <ShowAllButton showAll={showAll} toggleShowAll={toggleShowAll} />
+      </div>
       <PaletteChooser changePaletteIndex={changePaletteIndex} colors={allColors} />
       <Progress totalAssignments={assignmentData[0].assignments.length} completedAssignments={getPastDueAssignments(assignments) + getCompletedAssignments(assignments)} />
       {/* <AssignmentForm handleNewAssignment={handleNewAssignment} /> */}
       <CourseFilter handleCourseFilter={handleCourseFilter} selectedCourses={selectedCourses} />
-      <ul>
-        {assignments
-          .filter((assignment) => {
-            let dueDate = new Date(assignment.dueDate);
-            dueDate.setHours(23, 59, 59); // set the time to the end of the day
-            return dueDate >= new Date() && selectedCourses.includes(assignment.course);
-          })
-          .map((assignment, index) => (
-            <Assignment assignment={assignment} index={index} toggleCompletion={toggleCompletion} handleEdit={handleEdit} paletteIndex={paletteIndex} />
-          ))}
-      </ul>
+      <AssignmentList assignments={assignments} toggleCompletion={toggleCompletion} handleEdit={handleEdit} paletteIndex={paletteIndex} selectedCourses={selectedCourses} showAll={showAll} />
       {editingAssignment && <EditAssignmentForm assignment={editingAssignment} handleUpdate={handleUpdate} />}
-      <p>Made by Adir Buskila</p>
+      <Footer />
     </div>
   );
 }
