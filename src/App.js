@@ -106,7 +106,7 @@ function App() {
         <ShowAllButton showAll={showAll} toggleShowAll={toggleShowAll} />
       </div>
       <PaletteChooser changePaletteIndex={changePaletteIndex} colors={allColors} />
-      {/* <Progress totalAssignments={assignmentData[0].assignments.length} completedAssignments={getPastDueAssignments(assignments) + getCompletedAssignments(assignments)} /> */}
+      <Progress totalAssignments={assignmentData[0].assignments.length} completedAssignments={getPastDueAssignments(assignments) + getCompletedAssignments(assignments)} />
       {/* <AssignmentForm handleNewAssignment={handleNewAssignment} /> */}
       <CourseFilter handleCourseFilter={handleCourseFilter} selectedCourses={selectedCourses} />
       <AssignmentList assignments={assignments} toggleCompletion={toggleCompletion} handleEdit={handleEdit} paletteIndex={paletteIndex} selectedCourses={selectedCourses} showAll={showAll} />
